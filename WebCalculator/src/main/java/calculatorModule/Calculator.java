@@ -18,9 +18,11 @@ public class Calculator extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int num1 = Integer.parseInt(request.getParameter("value1"));
-		int num2 = Integer.parseInt(request.getParameter("value1"));
-		int result =0;
+		double num1 = Double.parseDouble(request.getParameter("value1"));
+		double num2 = Double.parseDouble(request.getParameter("value2"));
+		System.out.println("n1 - "+num1);
+		System.out.println("n2 - "+num2);
+		double result =0;
 		String btn= request.getParameter("btn");
 		switch(btn) {
 		case "add": result=(num1 + num2);
@@ -29,9 +31,13 @@ public class Calculator extends HttpServlet {
 					break;
 		case "mul": result=(num1 * num2);
 					break;
-		case "div": result=(num1 / num2);
+		case "div": if(num2!=0)
+					result=(num1 / num2);
+		else request.setAttribute("res", "number can't divide by 0" );
+		request.getRequestDispatcher("index.jsp").forward(request, response);
 					break;
 		}
+		System.out.println("resullt = "+result);
 		request.setAttribute("result", result );
 		request.getRequestDispatcher("index.jsp").forward(request, response);
 	}
